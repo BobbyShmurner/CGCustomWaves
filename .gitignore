@@ -1,0 +1,5 @@
+bin/
+obj/
+
+build.ps1
+*.log

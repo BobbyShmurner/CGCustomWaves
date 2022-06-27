@@ -1,0 +1,94 @@
+name: Publish QMod
+
+env:
+  MOD_NAME: CustomWave
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout
+      with:
+        submodules: true
+        lfs: true
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Build
+      run: |
+        dotnet publish -c Release -r win-x64
+
+    - name: Get Tag Version
+      id: get_tag_version
+      run: |
+        echo ${GITHUB_REF#refs/tags/}
+        echo ::set-output name=TAG::${GITHUB_REF#refs/tags/}
+        echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/v}
+
+    - name: Configure commit
+      run: |
+        git config user.name "Github Actions"
+        git config user.email "<>"
+
+    - name: Commit Edit Version
+      continue-on-error: true
+      run: |
+        git add .
+        git commit --allow-empty -m "Setup Release Branch"
+
+    # Then, we want to use the commit we have just made, and force push our tag to that commit
+    - name: Get Commit ID
+      id: get_commit_id
+      run: |
+        echo `git rev-parse HEAD`
+        echo ::set-output name=ID::`git rev-parse HEAD`
+
+    - name: Force create tag
+      run: |
+        git tag --force ${{ steps.get_tag_version.outputs.TAG }} ${{ steps.get_commid_id.outputs.ID }}
+
+    # Then, push, upload our artifacts, modify the config file to have soLink and debugSoLink
+    - name: Create and push version specific branch
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git branch version-${{ steps.get_tag_version.outputs.TAG }}
+        git push -u origin version-${{ steps.get_tag_version.outputs.TAG }} --force --tags
+
+    # Get release that was created for this tag
+    - name: Get Release
+      uses: octokit/request-action@v2.x
+      id: get_release
+      with:
+        route: GET /repos/:repository/releases/tags/${{ steps.get_tag_version.outputs.TAG }}
+        repository: ${{ github.repository }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Get Release Upload URL
+      id: get_upload_url
+      run: |
+        url=$(echo "$response" | jq -r '.upload_url')
+        echo $url
+        echo "::set-output name=upload_url::$url"
+      env:
+        response:  ${{ steps.get_release.outputs.data }}
+        
+    - name: Upload Release Asset
+      id: upload_release_asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.get_upload_url.outputs.upload_url }}
+        asset_path: ./bin/Release/net471/win-x64/publish/${{ env.MOD_NAME }}.dll
+        asset_name: ${{ env.MOD_NAME }}.dll
+        asset_content_type: application/octet-stream

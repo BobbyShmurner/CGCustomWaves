@@ -1,0 +1,34 @@
+name: Build
+
+env:
+  MOD_NAME: CustomWave
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+      name: Checkout
+      with:
+        submodules: true
+        lfs: true
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Build
+      run: |
+        dotnet publish -c Release -r win-x64
+        
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.MOD_NAME }}.dll
+        path: .\bin\Release\net471\win-x64\publish\${{ env.MOD_NAME }}.dll
+        if-no-files-found: error
