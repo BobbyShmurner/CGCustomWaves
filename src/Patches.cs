@@ -94,6 +94,14 @@ namespace CGCustomWaves
 				break;
 			}
 
+			for (var i = 0; i < codes.Count; i++) {
+				if (codes[i].opcode != OpCodes.Ldc_I4_S || (sbyte)codes[i].operand != 25) continue;
+
+				codes[i + 1].opcode = OpCodes.Bge;
+
+				break;
+			}
+
 			return codes.AsEnumerable();
 		}
 	}
@@ -144,13 +152,6 @@ namespace CGCustomWaves
 		{
 			var codes = new List<CodeInstruction>(instructions);
 
-			Plugin.Log.LogInfo("--- Before ---");
-
-			for (var i = 0; i < codes.Count; i++)
-			{
-				Plugin.Log.LogInfo(codes[i].ToString());
-			}
-
 			for (var i = 0; i < codes.Count; i++)
 			{
 				if (codes[i].opcode != OpCodes.Ldfld || (FieldInfo)codes[i].operand != typeof(WaveMenu).GetField("highestWave", BindingFlags.NonPublic | BindingFlags.Instance)) continue;
@@ -175,13 +176,6 @@ namespace CGCustomWaves
 				codes.Insert(i + 2, new CodeInstruction(OpCodes.Brtrue, continueLabel));
 
 				break;
-			}
-
-			Plugin.Log.LogInfo("--- After ---");
-
-			for (var i = 0; i < codes.Count; i++)
-			{
-				Plugin.Log.LogInfo(codes[i].ToString());
 			}
 
 			return codes.AsEnumerable();
