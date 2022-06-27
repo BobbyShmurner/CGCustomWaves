@@ -8,7 +8,7 @@ using HarmonyLib;
 
 using UnityEngine;
 
-namespace CustomWave
+namespace CGCustomWaves
 {
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     [BepInProcess("ULTRAKILL.exe")]
@@ -28,7 +28,7 @@ namespace CustomWave
             Plugin.Log = base.Logger;
             Plugin.Log.LogInfo("Created Global Logger");
 
-            ConfigCustomWave = Config.Bind("General", "CustomWave", 1, "The value of the Custom Wave Setter");
+            ConfigCustomWave = Config.Bind("General", "CGCustomWaves", 1, "The value of the Custom Wave Setter");
             Plugin.Log.LogInfo("Setup Config");
 
             byte[] imageBytes = Convert.FromBase64String(CheatIconStr);
@@ -38,7 +38,7 @@ namespace CustomWave
 
             CheatIcon = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-            harmony = new Harmony("CustomWave");
+            harmony = new Harmony("CGCustomWaves");
 
             harmony.PatchAll(typeof(WaveUISetup));
             harmony.PatchAll(typeof(GridColorPatch));

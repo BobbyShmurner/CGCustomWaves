@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <TargetFramework>net471</TargetFramework>
-    <AssemblyName>CustomWave</AssemblyName>
+    <AssemblyName>CGCustomWaves</AssemblyName>
     <Description>A mod that lets you set a custom wave for The Cyber Grind</Description>
     <Version>1.0.0</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

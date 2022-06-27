@@ -1,7 +1,7 @@
 name: Publish QMod
 
 env:
-  MOD_NAME: CustomWave
+  MOD_NAME: CGCustomWaves
 
 on:
   push:

@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Collections.Generic;
 
-namespace CustomWave
+namespace CGCustomWaves
 {
 	public class CyberGrindWaveOverride : ICheat
 	{

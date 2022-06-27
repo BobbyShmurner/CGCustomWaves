@@ -1,7 +1,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace CustomWave {
+namespace CGCustomWaves {
 	class CustomWaveSetter : MonoBehaviour {
 		public GameObject buttonSuccess;
 		public GameObject buttonFail;

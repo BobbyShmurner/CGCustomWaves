@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Collections.Generic;
 
-namespace CustomWave
+namespace CGCustomWaves
 {
 	// Sets up the custom ui in the wave menu
 	[HarmonyPatch(typeof(HudOpenEffect), "Awake", new Type[]{})]
