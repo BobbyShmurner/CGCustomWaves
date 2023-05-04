@@ -230,7 +230,7 @@ namespace CGCustomWaves
 	[HarmonyPatch(typeof(CheatsManager), "Start", new Type[]{})]
 	public static class RegisterCheat {
 		public static void Prefix(CheatsManager __instance) {
-			if (SceneManager.GetActiveScene().name != "Endless") return;
+			if (SceneManager.GetActiveScene().name != Plugin.CGSceneName) return;
 
 			__instance.RebuildIcons();
 			__instance.RegisterCheat(new CyberGrindWaveOverride(), "cyber grind");
