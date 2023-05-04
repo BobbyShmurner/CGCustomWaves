@@ -57,6 +57,14 @@ namespace CGCustomWaves
 			return false;
 		}
 
+		private int GetCurrentWave(WaveMenu wm) {
+			return (int)typeof(WaveMenu).GetField("currentWave", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(wm);
+		}
+
+		private int GetHighestWave(WaveMenu wm) {
+			return (int)typeof(WaveMenu).GetField("highestWave", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(wm);
+		}
+
 		private void RefreshWaveSetters() {
 			WaveMenu wm = GameObject.FindObjectOfType<WaveMenu>();
 			if (wm == null) {
@@ -64,8 +72,17 @@ namespace CGCustomWaves
 				return;
 			}
 
+			int oldWave = GetCurrentWave(wm);
 			typeof(WaveMenu).GetMethod("GetHighestWave", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(wm, new System.Object[]{});
-			wm.SetCurrentWave((int)typeof(WaveMenu).GetField("currentWave", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(wm));
+
+			int newWave = GetCurrentWave(wm);
+			int highestWave = GetHighestWave(wm);
+
+			if (oldWave != 0 && newWave == 0) {
+				newWave = (highestWave - (highestWave % 10)) / 2;
+			}
+
+			wm.SetCurrentWave(newWave);
 
 			foreach (WaveSetter setter in wm.setters) {
 				typeof(WaveSetter).GetMethod("Prepare", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(setter, new System.Object[]{});
