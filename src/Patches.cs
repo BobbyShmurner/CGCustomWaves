@@ -1,6 +1,6 @@
 using HarmonyLib;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 using System;
@@ -21,11 +21,11 @@ namespace CGCustomWaves
 			
 			RectTransform titleRect = waveUI.Find("Title").GetComponent<RectTransform>();
 			titleRect.anchoredPosition = new Vector2(titleRect.anchoredPosition.x, 0);
-			titleRect.GetComponent<Text>().fontSize = 24;
+			titleRect.GetComponent<TextMeshProUGUI>().fontSize = 24;
 
 			RectTransform textRect = waveUI.Find("Text").GetComponent<RectTransform>();
 			textRect.anchoredPosition = new Vector2(textRect.anchoredPosition.x, -50);
-			textRect.GetComponent<Text>().text = "SELECT STARTING WAVE:<size=16><color=orange>\n\n(Use the Wave Override Cheat to play any wave)</color></size>";
+			textRect.GetComponent<TextMeshProUGUI>().text = "SELECT STARTING WAVE:<size=16><color=orange>\n\n(Use the Wave Override Cheat to play any wave)</color></size>";
 
 			RectTransform customWave = GameObject.Instantiate(waveUI.Find("0").gameObject, waveUI).GetComponent<RectTransform>();
 			customWave.anchoredPosition = new Vector2(0, 25);
@@ -47,28 +47,28 @@ namespace CGCustomWaves
 			increase.anchoredPosition = new Vector2(65, 25);
 			increase.localScale = Vector3.one;
 			increase.sizeDelta = new Vector2(30, 40);
-			increase.GetComponentInChildren<Text>().text = ">";
+			increase.GetComponentInChildren<TextMeshProUGUI>().text = ">";
 
 			RectTransform increaseGreater = GameObject.Instantiate(increase.gameObject, waveUI).GetComponent<RectTransform>();
 			increaseGreater.GetComponent<CustomWaveSetter>().changeValue = 10;
 			increaseGreater.localScale = Vector3.one;
 			increaseGreater.anchoredPosition = new Vector2(100, 25);
 			increaseGreater.sizeDelta = new Vector2(40, 40);
-			increaseGreater.GetComponentInChildren<Text>().text = ">>";
+			increaseGreater.GetComponentInChildren<TextMeshProUGUI>().text = ">>";
 
 			RectTransform decrease = GameObject.Instantiate(increase.gameObject, waveUI).GetComponent<RectTransform>();
 			decrease.GetComponent<CustomWaveSetter>().changeValue = -1;
 			decrease.localScale = Vector3.one;
 			decrease.anchoredPosition = new Vector2(-65, 25);
 			decrease.sizeDelta = new Vector2(30, 40);
-			decrease.GetComponentInChildren<Text>().text = "<";
+			decrease.GetComponentInChildren<TextMeshProUGUI>().text = "<";
 
 			RectTransform decreaseGreater = GameObject.Instantiate(increase.gameObject, waveUI).GetComponent<RectTransform>();
 			decreaseGreater.GetComponent<CustomWaveSetter>().changeValue = -10;
 			decreaseGreater.localScale = Vector3.one;
 			decreaseGreater.anchoredPosition = new Vector2(-100, 25);
 			decreaseGreater.sizeDelta = new Vector2(40, 40);
-			decreaseGreater.GetComponentInChildren<Text>().text = "<<";
+			decreaseGreater.GetComponentInChildren<TextMeshProUGUI>().text = "<<";
 		}
 	}
 
