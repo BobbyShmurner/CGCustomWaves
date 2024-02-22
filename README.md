@@ -12,4 +12,4 @@ A mod that lets you set a custom wave for The Cyber Grind
 
 # Building
 
-All that's required is that you add `Assembly-CSharp.dll` and `UnityEngine.UI.dll` to the `lib` folder in the repo's root
+All that's required is that you add `Assembly-CSharp.dll` and `Unity.TextMeshPro.dll` to the `lib` folder in the repo's root
